@@ -1,0 +1,92 @@
+import numpy as np
+from run_kut4 import *
+import pylab as pl
+
+# a)
+
+# Defining the system of equations in vector form
+
+def F(t,v,a=1.,b=1.8):
+    F = np.zeros(2)
+    F[0] = 1. - (1. + b)*v[0] + a*(v[0]**2)*v[1]
+    F[1] = b*v[0] - a*(v[0]**2)*v[1]
+    return F
+    
+# Integrating the system of equations
+
+t = 0.0         # Start of integration
+tStop = 100.    # End of integration
+v = [0., 0.]    # Initial values of {y}
+h = 0.05        # Step size
+T, C = integrate(F,t,v,tStop,h) # gives back an time array and the two corrisponding concentrations for the ODE
+
+'''
+Reference:
+
+T = time array
+C[:,0] = concentration of species 1
+C[:,1] = concentration of species 2
+'''
+
+# Plotting the graph of concentation against time
+
+pl.plot(T,C[:,0],label='Species 1')
+pl.plot(T,C[:,1],label='Species 2')
+pl.xlabel('Time')
+pl.ylabel('Concentration')
+pl.legend(loc='best')
+pl.show()
+
+# Plotting the graph of concentration against concentration 
+
+pl.plot(C[:,1],C[:,0], label='Species 1')
+pl.plot(C[:,0],C[:,1], label='Species 2')
+pl.xlabel('Concentration')
+pl.ylabel('Concentration')
+pl.legend(loc='best')
+pl.show()
+
+# b)
+
+# Defining the function
+
+def Fnew(t,v,a=1.,b=2.02):
+    Fnew = np.zeros(2)
+    Fnew[0] = 1. - (1. + b)*v[0] + a*(v[0]**2)*v[1]
+    Fnew[1] = b*v[0] - a*(v[0]**2)*v[1]
+    return Fnew
+
+# The conditions are the same as before
+
+# Integrating the system  
+Tnew, Cnew = integrate(Fnew,t,v,tStop,h)
+
+# Plotting the graph of concentation against time
+
+pl.plot(Tnew,Cnew[:,0],label='Species 1')
+pl.plot(Tnew,Cnew[:,1],label='Species 2')
+pl.xlabel('Time')
+pl.ylabel('Concentration')
+pl.legend(loc='best')
+pl.show()
+
+# Plotting the graph of concentration against concentration 
+
+pl.plot(Cnew[:,1],Cnew[:,0], label='Species 1')
+pl.plot(Cnew[:,0],Cnew[:,1], label='Species 2')
+pl.xlabel('Concentration')
+pl.ylabel('Concentration')
+pl.legend(loc='best')
+pl.show()
+
+'''
+Discuss:
+
+The concentration against time graphs show that each species alternates out of phase to keep the total concentration the same. 
+The products formed in the reation is zero to begin with.
+Over time the concentrations level off or stablize as the reaction stops and all the product is formed.
+
+The concentration against concentration graphs show how each species/products vary with respect to each other. 
+Again, the concentration of both starts from zero. 
+The plots are symetetrical implying the inverse altination between each species in concentration. 
+'''
